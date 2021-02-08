@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newgolang
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: newgolang
+  template:
+    metadata:
+      labels:
+        name: newgolang
+    spec:
+      containers:
+      - image: kiranbabycontainerreg.azurecr.io/kiranbabycontainerrepo:newgolang
+        name: kiranbabycontainerreg
+        ports:
+          - containerPort: 8081
+      imagePullSecrets: 
+      - name: newgolangsecret
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: newgolangService
+spec:
+  type: LoadBalancer
+  selector:
+    name: newgolang
+  ports:
+  - name: http  
+    port: 80
+    targetPort: 8081
